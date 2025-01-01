@@ -1,0 +1,76 @@
+*{
+    padding:0;
+    margin:0;
+}
+.profile{
+    width:100%;
+    position: relative;
+}
+.profile img {
+    width: 100vw;
+    height: 100vh;
+  }
+.profile h2{
+    position: absolute;
+    top:25%;
+    left:35%;
+    margin:20px;
+    font-size: 36px;
+    text-align: center;
+    color:cadetblue;
+/*     
+    height: 100vh;
+    background-repeat: no-repeat;
+    width:100vw; */
+}
+.profile .content {
+    height:auto;
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    color: #000; /* Adjust text color */
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+.profile_form{
+    display:flex;
+    text-align: start;
+    flex-direction: column;
+    /* color:rgb(66, 88, 97); */
+    color:rgb(40 22 82);
+    font-weight: 770;
+}
+.profile label {
+    margin-bottom: 10px;
+
+}
+.profile input{
+    margin-bottom: 10px;
+    background: none;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: ghostwhite;
+}
+input::placeholder {
+    color:ghostwhite; /* Set the color of the placeholder text */
+}
+.div1{
+    padding:10px;
+}
+.profile button{
+    padding:10px;
+    font-size:16px;
+    position: absolute;
+    top: 90%;
+    left: 85%;
+    color:white;
+   
+    background-color:#396d6f;
+    border-radius:8px;
+}
+.profile .link{
+    color:white;
+    text-decoration: none;
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile_Page</title>
+    <link rel="stylesheet" type="text/css" href="profile.css">
+</head>
+<body>
+    <div class="profile">
+        
+        <img src="design.png" alt="DecorativeBorder"/>
+        <h2>COMPANY DETAILS</h2>
+        <div class = "content">
+            <form class = "profile_form">
+                <div class="div1" >
+                    <label>Company :</label>
+                    <input type="text" id="companyname" placeholder="Company name" required/>
+                </div>
+                <div class="div1">
+                    <label>Adress :</label>
+                    <input type="text" id="address" placeholder="Adress information" required/>
+                </div>
+                <div class="div1">
+                    <label>Mobile No. :</label>
+                    <input type="number" id="mobile_no" placeholder="1234567890" pattern="^\d{10}$" required>
+                </div>
+                <div class="div1">
+                    <label>GSTIN or Tax Identification Number :</label>
+                    <input id="gstno" type="text" required>
+                </div>
+                
+                
+            </form>
+            
+        </div>
+        <div>
+            <button onclick="saveCompanyData()">Generate invoice</button>
+            
+        </div> 
+        
+        
+    </div>
+</body>
+<script>
+    const saveCompanyData=()=>{
+        
+        const companyname = document.getElementById("companyname").value;
+        const address = document.getElementById("address").value;
+        const mobileno = document.getElementById("mobile_no").value;
+        const gstin = document.getElementById("gstno").value;
+
+        if(companyname && address && gstin && mobileno){
+            
+            const currentusername = localStorage.getItem('currentusername');
+            
+            if(currentusername){
+                localStorage.setItem(`user_${currentusername}_companyname`,companyname);
+                localStorage.setItem(`user_${currentusername}_address`,address);
+                localStorage.setItem(`user_${currentusername}_mobileno`,mobileno);
+                localStorage.setItem(`user_${currentusername}_gstin`,gstin);
+                window.location.href = "invoice.html";
+            }
+            else{
+                alert("No user");
+            }
+        }
+        else{
+            alert("Pls fill all the details");
+        }
+    };
+</script>
+</html>

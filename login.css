@@ -1,0 +1,76 @@
+* {
+    margin: 0;
+    padding: 0;
+    /* box-sizing: border-box; */
+}
+
+html, body {
+    height: 100%; /* Ensure the body and html fill the full viewport height */
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-image: url(loginbackground.png);
+    background-repeat: no-repeat; /* Ensures the image is not repeated */
+    background-size: cover; 
+}
+.login{
+
+    display:flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    
+}
+
+.logindiv{
+    width:30%;
+    
+}
+.login h2{
+    /* position :absolute;
+    top:20%;
+    left:30%; */
+    font-size: 36px;
+    /* color:rgb(165, 155, 229); */
+    color:rgb(0 100 255);
+    margin-bottom: 20px;
+
+}
+.loginform{
+    
+    display:flex;
+    flex-direction: column;
+   
+    /* position: absolute;
+    top:40%;
+    left:40%;
+    width:20%;
+     */
+}
+.loginform label{
+    color:white;
+    font-size:20px;
+    font-weight:700;
+    margin-bottom: 10px;
+}
+.loginform input{
+    background-color: white;
+    color:black;
+    margin-bottom: 10px;
+    font-size:16px;
+    padding:5px;
+}
+.loginform button{
+    padding:10px;
+    margin-top: 10px;
+    background-color:rgb(0 45 249);
+    border-radius: 4px;
+    color:white;
+    font-size:16px;
+    font-weight: 400;
+}
+.loginform a{
+    margin-top: 10px;
+    color:aliceblue;
+}

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice System</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" type="text/css" href="invoice.css">
+
+</head>
+<body>
+
+<div class="container">
+    <h2>Invoice Generator</h2>
+
+    
+
+    <div class="row">
+        <div class="col-left">
+            <form id="productForm">
+                <div class="form-group">
+                    <label for="product">Product</label>
+                    <input type="text" id="product" class="input-field" required>
+                    <div id=" productError" class="error-message">Invalid Name</div>
+                </div>
+                <div class="form-group">
+                    <!-- due to type number the arrow will come -->
+                    <label for="quantity">Quantity</label>
+                    <input type="number" id="quantity" class="input-field" min="1" required>
+                    
+                </div>
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <input type="number" id="price" class="input-field" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="taxpercentage">Tax Percentage</label>
+                    <input type="number" id="tax" class="input-field" placeholder="Enter tax percentage" min="0" >
+                </div>
+                <div class="form-group">
+                    <label for="discount">Discount</label>
+                    <input type="number" id="discount" class="input-field" placeholder="Enter discount" min="0">
+                </div>
+                <button type="submit" class="btn">Add Product</button>
+                <button id="downloadPdf" class="btn">Download PDF</button>
+            </form>
+        </div>
+
+        <div id="invoiceContent" class="col-right">
+            <h1>Invoice </h1>
+            <div>
+                <strong>Invoice Number:</strong> <span id="invoiceNumber"></span>
+                <br>
+                <strong>Date:</strong> <span id="invoiceDate"></span>
+            </div>
+        
+            <div id = "company_details">
+                <!-- details of company retrived from loacl storage -->
+            </div>
+            <table id="invoiceTable">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dynamic rows will be added here -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3"><strong>Grand Total</strong></td>
+                        <td id="grandTotal">0.00</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script>
+    //to get the unique invoice number
+    const invoiceNumber = document.getElementById('invoiceNumber');
+    const invoiceNo = 'INV-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+    invoiceNumber.innerText = invoiceNo;
+
+
+    //to get the date
+    const invoiceDate = document.getElementById('invoiceDate');
+    const date = new Date().toLocaleDateString();
+    invoiceDate.innerText = date;
+
+    // Get the current logged-in user
+    const currentUser = localStorage.getItem('currentusername');
+    
+    if(currentUser){
+        //retrive data from loacl storage
+        const companyname = localStorage.getItem(`user_${currentUser}_companyname`);
+        const address = localStorage.getItem(`user_${currentUser}_address`);
+        const mobileno = localStorage.getItem(`user_${currentUser}_mobileno`);
+        const gstno = localStorage.getItem(`user_${currentUser}_gstin`);
+        if(companyname && address && mobileno && gstno){
+        const companydetails = document.getElementById("company_details");
+        companydetails.innerHTML = `<p><strong>Company Name :</strong> ${companyname}</p>
+                                    <p><strong>Address :</strong> ${address}</p>
+                                    <p><strong>Mobile No :</strong> ${mobileno}</p>
+                                    <p><strong>Gst No :</strong> ${gstno}</p>`;
+        }
+        else{
+            alert("no details found");
+        }
+    }
+    else{
+        
+        alert("No user is logged in.");
+        window.location.href = "login.html"; // Redirect to login page if no user is logged in
+    
+    }
+    
+    //for pdf
+    document.getElementById("downloadPdf").addEventListener("click", () => {
+        const invoiceElement = document.getElementById("invoiceContent");; // Replace with the ID of your invoice container if needed
+        html2canvas(invoiceElement, { scale: 2 }).then((canvas) => {
+            const imgData = canvas.toDataURL("image/png");
+            const pdf = new jspdf.jsPDF("p", "mm", "a4");
+
+            // Convert canvas dimensions to PDF dimensions
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+            pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+            pdf.save("invoice.pdf");
+        });
+    });
+    // *****************************************
+
+    
+
+    document.getElementById('productForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Get form values
+        const product = document.getElementById('product');
+        // const quantity = parseFloat(document.getElementById('quantity').value);
+        const quantity = document.getElementById('quantity');
+        const productError = document.getElementById('productError');
+        const price = parseFloat(document.getElementById('price').value);
+        const quantityvalue = quantity.value;
+
+        //quantityError block
+        //*****************************
+
+        // Calculate total
+        const total = (parseFloat(quantityvalue) * price).toFixed(2);
+
+        // Create table row
+        const table = document.getElementById('invoiceTable').getElementsByTagName('tbody')[0];
+        const newRow = table.insertRow();
+
+        newRow.innerHTML = `
+            <td>${product.value}</td>
+            <td>${quantityvalue}</td>
+            <td>$${price.toFixed(2)}</td>
+            <td>$${total}</td>
+            <td><button class="btn-remove" onclick="removeRow(this)">X</button></td>
+        `;
+
+        // Update grand total
+        updateGrandTotal();
+
+        // Clear form inputs
+        document.getElementById('product').value = '';
+        document.getElementById('quantity').value = '';
+        document.getElementById('price').value = '';
+    });
+
+    function removeRow(button) {
+        const row = button.parentElement.parentElement;
+        row.remove();
+        updateGrandTotal();
+    }
+
+    function updateGrandTotal() {
+        const rows = document.getElementById('invoiceTable').getElementsByTagName('tbody')[0].rows;
+        let grandTotal = 0;
+
+        for (let row of rows) {
+            const total = parseFloat(row.cells[3].innerText.replace('$', ''));
+            grandTotal += total;
+        }
+
+        document.getElementById('grandTotal').innerText = grandTotal.toFixed(2);
+    }
+
+    
+</script>
+
+
+</body>
+</html>

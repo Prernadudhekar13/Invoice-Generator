@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In</title>
+    <link rel="stylesheet" type="text/css" href="login.css">
+
+</head>
+<body>
+    <div class = "login">
+        <!-- <img src="loginbackground.png" class = "imagelogin"alert="loginimage"/> -->
+        <h2>Login Form</h2>
+        <div class="logindiv">
+            <form class="loginform">
+                <label>Username</label>
+                <input type="text" id="loginuser" placeholder="Enter username"/>
+                <label>Password</label>
+                <input type="password"  id ="loginpass" placeholder="Enter password"/>
+                <button type="button" onclick="loginform()">Log In</button>
+                <a href="index.html">Sign In</a>
+            </form>
+        </div>
+        <!-- <div class="loginbutton">
+            <button>Log In</button>
+            <a href="">Sign In</a>
+        </div> -->
+        
+    </div>
+
+</body>
+<script>
+    const loginform=()=>{
+        const currloginuser = document.getElementById('loginuser').value;
+        const currloginpass = document.getElementById('loginpass').value;
+        
+        const storedloginpass = localStorage.getItem(`user_${currloginuser}_password`);
+        if(storedloginpass===currloginpass){
+            //Set the current username in localStorage to track logged-in user
+            localStorage.setItem('currentusername', currloginuser);
+            window.location.href = "invoice.html";
+        }
+        else{
+            alert("Invalid Login id")
+        }
+    };
+</script>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <link rel="stylesheet" type="text/css" href="login.css">
+
+</head>
+<body>
+    <div class = "login">
+        <!-- <img src="loginbackground.png" class = "imagelogin"alert="loginimage"/> -->
+        <h2>Sign Form</h2>
+        <div class="logindiv">
+            <form class="loginform">
+                <label>Username</label>
+                <input type="text" id ="username" placeholder="Enter username"/>
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Enter password"/>
+                <!-- Set button type to button to prevent form submission -->
+                <button type="button" onclick="SignInform()">Sign In</button>
+                <a href="login.html">Log In</a>
+            </form>
+        </div>
+       
+        <!-- <div class="loginbutton">
+            <button>Log In</button>
+            <a href="">Sign In</a>
+        </div> -->
+        
+    </div>
+</body>
+<script>
+    const SignInform=()=>{
+        const currentusername= document.getElementById("username").value;
+        const currentpassword = document.getElementById("password").value;
+
+          // Check if the user already exists
+        const storedPassword = localStorage.getItem(`user_${currentusername}_password`);
+        if(storedPassword!=null){
+            alert("Username is already present !! log in")
+        }
+        else{
+            localStorage.setItem(`user_${currentusername}_password`,currentpassword);
+            // Set the current username in localStorage to keep track of the logged-in user
+            localStorage.setItem('currentusername', currentusername);
+            window.location.href="profile.html";
+        }
+    };
+</script>
+</html>
